@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshHarvest | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="glow-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="fixed w-full z-50 glass h-20 flex items-center border-b border-white/5">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold tracking-tight">
+                <i class="fa-solid fa-leaf text-[#00dc82]"></i> FreshHarvest
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+                <a href="index.html" class="text-[#00dc82]">Home</a>
+                <a href="products.html" class="hover:text-[#00dc82] transition-colors">Products</a>
+                <a href="cart.html" class="hover:text-[#00dc82] transition-colors">Cart</a>
+                <a href="contact.html" class="hover:text-[#00dc82] transition-colors">Contact</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="cart.html" class="relative p-2 group">
+                    <i class="fa-solid fa-cart-shopping text-xl group-hover:text-[#00dc82] transition-colors"></i>
+                    <span
+                        class="cart-count absolute -top-1 -right-1 bg-[#00dc82] text-[#003d33] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </a>
+                <a href="login.html"
+                    class="btn-primary px-6 py-2.5 rounded-full text-sm shadow-lg shadow-emerald-500/20">Sign In</a>
+                <button class="md:hidden text-2xl" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+    <div id="mobile-menu"
+        class="hidden fixed top-20 w-full glass z-40 p-4 flex flex-col gap-4 md:hidden border-b border-white/10">
+        <a href="index.html" class="block p-3 hover:bg-white/5 rounded-lg text-[#00dc82]">Home</a>
+        <a href="products.html" class="block p-3 hover:bg-white/5 rounded-lg">Products</a>
+        <a href="cart.html" class="block p-3 hover:bg-white/5 rounded-lg">Cart</a>
+        <a href="contact.html" class="block p-3 hover:bg-white/5 rounded-lg">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center pt-24 pb-12 px-6 relative overflow-hidden">
+        <div class="container mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="space-y-8 animate-fade-in-up">
+                <div
+                    class="inline-flex items-center gap-2 bg-[#00dc82]/10 text-[#00dc82] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-[#00dc82]/20">
+                    <span class="w-2 h-2 rounded-full bg-[#00dc82] animate-pulse"></span> 100% Organic & Fresh
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold leading-[1.1]">
+                    Eat Fresh, <br>
+                    <span class="text-gradient">Live Better.</span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-lg leading-relaxed">
+                    Premium organic fruits and vegetables delivered directly from local farms toimmediately to your
+                    doorstep within 24 hours.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="products.html"
+                        class="btn-primary px-8 py-3.5 rounded-full shadow-xl shadow-emerald-500/20 flex items-center gap-2">
+                        Shop Now <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#process"
+                        class="btn-secondary px-8 py-3.5 rounded-full font-medium flex items-center gap-2">
+                        <i class="fa-solid fa-play text-xs"></i> How it works
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-8 pt-6 border-t border-white/5">
+                    <div class="flex -space-x-3">
+                        <img src="https://randomuser.me/api/portraits/women/1.jpg"
+                            class="w-10 h-10 rounded-full border-2 border-black" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/2.jpg"
+                            class="w-10 h-10 rounded-full border-2 border-black" alt="User">
+                        <img src="https://randomuser.me/api/portraits/women/3.jpg"
+                            class="w-10 h-10 rounded-full border-2 border-black" alt="User">
+                        <div
+                            class="w-10 h-10 rounded-full border-2 border-black bg-[#1e293b] flex items-center justify-center text-xs font-bold">
+                            +2k</div>
+                    </div>
+                    <div>
+                        <div class="flex text-yellow-400 text-sm mb-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 font-medium">4.9/5 from Happy Customers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Image Wrapper -->
+            <div class="relative hover-3d-wrapper group">
+                <div class="absolute inset-0 bg-[#00dc82]/20 blur-[120px] rounded-full"></div>
+
+                <div class="relative z-10 hover-3d transition-transform duration-200 ease-out">
+                    <img src="ChatGPT Image Jul 6, 2025, 12_55_41 PM.png" alt="Fresh Produce"
+                        class="w-full max-w-md mx-auto rounded-[2rem] border border-white/10 shadow-2xl glass-card object-cover aspect-[4/5] object-center">
+
+                    <!-- Floating Badge -->
+                    <div
+                        class="absolute top-12 -left-6 glass px-5 py-3 rounded-2xl flex items-center gap-3 animate-[float_4s_ease-in-out_infinite] shadow-lg">
+                        <div class="bg-green-500/20 p-2.5 rounded-full text-[#00dc82]">
+                            <i class="fa-solid fa-leaf text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Quality</p>
+                            <p class="font-bold text-sm">100% Organic</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge 2 -->
+                    <div
+                        class="absolute bottom-12 -right-6 glass px-5 py-3 rounded-2xl flex items-center gap-3 animate-[float_5s_ease-in-out_infinite_1s] shadow-lg">
+                        <div class="bg-yellow-500/20 p-2.5 rounded-full text-yellow-400">
+                            <i class="fa-solid fa-bolt text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Delivery</p>
+                            <p class="font-bold text-sm">Under 24h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-3xl relative group hover:-translate-y-2 transition duration-300">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#00dc82] to-blue-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+                    </div>
+                    <div class="relative bg-[#0a0a0a] h-full p-6 rounded-2xl border border-white/5">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#00dc82]/10 flex items-center justify-center text-[#00dc82] text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Fast Delivery</h3>
+                        <p class="text-gray-400 leading-relaxed">We deliver your organic goods within 24 hours of
+                            harvest to ensure maximum freshness.</p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-3xl relative group hover:-translate-y-2 transition duration-300">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#00dc82] to-yellow-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+                    </div>
+                    <div class="relative bg-[#0a0a0a] h-full p-6 rounded-2xl border border-white/5">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#00dc82]/10 flex items-center justify-center text-[#00dc82] text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">100% Organic</h3>
+                        <p class="text-gray-400 leading-relaxed">Certified organic farming with zero pesticides. Pure
+                            nature, straight to your table.</p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-3xl relative group hover:-translate-y-2 transition duration-300">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#00dc82] to-purple-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+                    </div>
+                    <div class="relative bg-[#0a0a0a] h-full p-6 rounded-2xl border border-white/5">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#00dc82]/10 flex items-center justify-center text-[#00dc82] text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">24/7 Support</h3>
+                        <p class="text-gray-400 leading-relaxed">Our customer happiness team is always available to help
+                            you with your healthy journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-20 bg-black/20" id="featured-products">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <span class="text-[#00dc82] font-bold tracking-wider uppercase text-sm">Best Sellers</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-2">Our <span class="text-gradient">Featured</span>
+                        Products</h2>
+                </div>
+                <a href="products.html"
+                    class="group flex items-center gap-2 text-[#00dc82] hover:text-white transition">
+                    View All Products <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+
+            <!-- Products Grid (Populated by JS) -->
+            <div id="home-products-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Fallback Loading State -->
+                <div class="col-span-full text-center py-20">
+                    <div
+                        class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-10 w-10 mx-auto mb-4">
+                    </div>
+                    <p class="text-gray-500">Loading fresh products...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-[#00dc82]/5 blur-[100px] -z-10"></div>
+        <div class="container mx-auto px-6 text-center">
+            <span class="text-[#00dc82] font-bold tracking-wider uppercase text-sm">Testimonials</span>
+            <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-16">What Our <span class="text-gradient">Customers
+                    Say</span></h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div
+                    class="glass p-8 rounded-3xl text-left border border-white/5 hover:border-[#00dc82]/30 transition group">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">"The quality of the vegetables is unmatched. I've
+                        never tasted strawberries this sweet from a grocery store!"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                            class="w-12 h-12 rounded-full border border-white/10" alt="Sarah L.">
+                        <div>
+                            <h4 class="font-bold">Sarah L.</h4>
+                            <p class="text-xs text-gray-500">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="glass p-8 rounded-3xl text-left border border-white/5 hover:border-[#00dc82]/30 transition group translate-y-4 md:translate-y-0">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">"Fast delivery and eco-friendly packaging. Finally a
+                        service that cares about the planet as much as I do."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                            class="w-12 h-12 rounded-full border border-white/10" alt="Mike T.">
+                        <div>
+                            <h4 class="font-bold">Mike T.</h4>
+                            <p class="text-xs text-gray-500">Chef</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="glass p-8 rounded-3xl text-left border border-white/5 hover:border-[#00dc82]/30 transition group">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">"My kids actually eat their veggies now! The
+                        presentation and freshness make all the difference."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg"
+                            class="w-12 h-12 rounded-full border border-white/10" alt="Emily R.">
+                        <div>
+                            <h4 class="font-bold">Emily R.</h4>
+                            <p class="text-xs text-gray-500">Mom of 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto">
+            <div
+                class="bg-gradient-to-r from-[#004d40] to-[#002520] rounded-[3rem] p-12 md:p-20 relative overflow-hidden border border-white/5 text-center">
+                <!-- Background Decoration -->
+                <div class="absolute top-0 left-0 w-full h-full">
+                    <div class="absolute top-1/2 left-1/4 w-64 h-64 bg-[#00dc82]/20 rounded-full blur-[100px]"></div>
+                    <div class="absolute bottom-0 right-0 w-96 h-96 bg-[#00dc82]/10 rounded-full blur-[120px]"></div>
+                </div>
+
+                <div class="relative z-10 max-w-2xl mx-auto space-y-8">
+                    <div
+                        class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto text-2xl text-[#00dc82] mb-4 rotate-12 backdrop-blur-md border border-white/10">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold">Join Our <span class="text-[#00dc82]">Community</span>
+                    </h2>
+                    <p class="text-gray-300 text-lg">Subscribe to get special offers, free giveaways, and
+                        once-in-a-lifetime deals.</p>
+
+                    <form class="flex flex-col md:flex-row gap-4 max-w-md mx-auto"
+                        onsubmit="event.preventDefault(); showToast('Subscribed Successfully!')">
+                        <input type="email" placeholder="Enter your email"
+                            class="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-[#00dc82] transition glass">
+                        <button
+                            class="btn-primary px-8 py-4 rounded-full font-bold shadow-xl shadow-[#00dc82]/20">Subscribe</button>
+                    </form>
+                    <p class="text-xs text-gray-500 mt-4">No spam, ever. Unsubscribe anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 pt-20 pb-10 bg-black/40">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2 text-2xl font-bold tracking-tight mb-4">
+                        <i class="fa-solid fa-leaf text-[#00dc82]"></i> FreshHarvest
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Bringing nature's finest organic produce directly to your doorstep. Eat fresh, live healthy.
+                    </p>
+                    <div class="flex gap-4 pt-2">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#00dc82] hover:text-[#003d33] transition"><i
+                                class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#00dc82] hover:text-[#003d33] transition"><i
+                                class="fa-brands fa-twitter"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#00dc82] hover:text-[#003d33] transition"><i
+                                class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links 1 -->
+                <div>
+                    <h4 class="font-bold mb-6 text-lg">Quick Links</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-[#00dc82] transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-[#00dc82] transition">Shop All</a></li>
+                        <li><a href="cart.html" class="hover:text-[#00dc82] transition">My Cart</a></li>
+                        <li><a href="login.html" class="hover:text-[#00dc82] transition">Login</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links 2 -->
+                <div>
+                    <h4 class="font-bold mb-6 text-lg">Support</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="contact.html" class="hover:text-[#00dc82] transition">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-[#00dc82] transition">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-[#00dc82] transition">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-[#00dc82] transition">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold mb-6 text-lg">Contact</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-location-dot text-[#00dc82] mt-1"></i>
+                            <span>123 Green Valley, Eco City, Earth 10101</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-phone text-[#00dc82] mt-1"></i>
+                            <span>+880 123 456 7890</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-envelope text-[#00dc82] mt-1"></i>
+                            <span>hello@freshharvest.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 text-center text-gray-500 text-xs">
+                <p>&copy; 2024 FreshHarvest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

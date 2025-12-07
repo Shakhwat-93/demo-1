@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | FreshHarvest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+    <div class="glow-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="glass-card p-10 rounded-3xl w-full max-w-md text-center hover-3d relative z-10">
+        <a href="index.html"
+            class="inline-block mb-6 text-[#00dc82] text-4xl hover:scale-110 transition duration-300"><i
+                class="fa-solid fa-leaf"></i></a>
+        <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+        <p class="text-gray-400 mb-8">Sign in to access your garden</p>
+
+        <form class="space-y-4 text-left">
+            <div>
+                <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Email</label>
+                <input type="email"
+                    class="w-full glass bg-white/5 px-5 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
+                    placeholder="hello@example.com">
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Password</label>
+                <input type="password"
+                    class="w-full glass bg-white/5 px-5 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
+                    placeholder="••••••••">
+            </div>
+            <button class="w-full btn-primary py-3 rounded-xl font-bold mt-4 shadow-lg shadow-emerald-500/20">Sign
+                In</button>
+        </form>
+
+        <p class="mt-6 text-sm text-gray-400">Don't have an account? <a href="#"
+                class="text-[#00dc82] hover:underline font-bold">Register</a></p>
+    </div>
+</body>
+
+</html>
