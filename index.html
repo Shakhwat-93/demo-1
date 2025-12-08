@@ -2,15 +2,48 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KJ57P2PD');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FreshHarvest | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1362332222037529');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1362332222037529&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJ57P2PD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="glow-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -40,22 +73,26 @@
         </div>
     </nav>
     <div id="mobile-menu"
-        class="hidden fixed top-20 w-full glass z-40 p-4 flex flex-col gap-4 md:hidden border-b border-white/10">
-        <a href="index.html" class="block p-3 hover:bg-white/5 rounded-lg text-[#00dc82]">Home</a>
-        <a href="products.html" class="block p-3 hover:bg-white/5 rounded-lg">Products</a>
-        <a href="cart.html" class="block p-3 hover:bg-white/5 rounded-lg">Cart</a>
-        <a href="contact.html" class="block p-3 hover:bg-white/5 rounded-lg">Contact</a>
+        class="hidden fixed inset-0 top-20 bg-black/90 backdrop-blur-xl z-40 p-6 flex flex-col gap-6 md:hidden transition-all duration-300 transform origin-top">
+        <a href="index.html"
+            class="block text-xl font-medium p-2 hover:text-[#00dc82] transition-colors border-b border-white/5">Home</a>
+        <a href="products.html"
+            class="block text-xl font-medium p-2 hover:text-[#00dc82] transition-colors border-b border-white/5">Products</a>
+        <a href="cart.html"
+            class="block text-xl font-medium p-2 hover:text-[#00dc82] transition-colors border-b border-white/5">Cart</a>
+        <a href="contact.html"
+            class="block text-xl font-medium p-2 hover:text-[#00dc82] transition-colors border-b border-white/5">Contact</a>
     </div>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center pt-24 pb-12 px-6 relative overflow-hidden">
-        <div class="container mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+    <section class="min-h-screen flex items-center pt-32 pb-12 px-6 relative overflow-hidden">
+        <div class="container mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
             <div class="space-y-8 animate-fade-in-up">
                 <div
                     class="inline-flex items-center gap-2 bg-[#00dc82]/10 text-[#00dc82] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-[#00dc82]/20">
                     <span class="w-2 h-2 rounded-full bg-[#00dc82] animate-pulse"></span> 100% Organic & Fresh
                 </div>
-                <h1 class="text-5xl lg:text-7xl font-bold leading-[1.1]">
+                <h1 class="text-4xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
                     Eat Fresh, <br>
                     <span class="text-gradient">Live Better.</span>
                 </h1>
@@ -285,7 +322,7 @@
     <section class="py-24 px-6">
         <div class="container mx-auto">
             <div
-                class="bg-gradient-to-r from-[#004d40] to-[#002520] rounded-[3rem] p-12 md:p-20 relative overflow-hidden border border-white/5 text-center">
+                class="bg-gradient-to-r from-[#004d40] to-[#002520] rounded-[2rem] md:rounded-[3rem] p-8 md:p-20 relative overflow-hidden border border-white/5 text-center">
                 <!-- Background Decoration -->
                 <div class="absolute top-0 left-0 w-full h-full">
                     <div class="absolute top-1/2 left-1/4 w-64 h-64 bg-[#00dc82]/20 rounded-full blur-[100px]"></div>

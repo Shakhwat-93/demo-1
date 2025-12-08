@@ -13,12 +13,20 @@
     --glass-border: rgba(255, 255, 255, 0.08);
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    /* Offset for fixed header */
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-main);
     overflow-x: hidden;
     line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+    /* Remove tap highlight on mobile */
 }
 
 h1,

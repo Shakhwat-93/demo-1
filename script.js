@@ -98,11 +98,48 @@ function addToCart(id) {
     } else {
         cart.push({ ...product, quantity: 1 });
     }
+
+    // GTM Data Layer - Add to Cart
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'add_to_cart',
+        ecommerce: {
+            currency: 'USD',
+            value: product.price,
+            items: [{
+                item_id: product.id,
+                item_name: product.name,
+                item_category: product.category,
+                price: product.price,
+                quantity: 1
+            }]
+        }
+    });
+
     updateCartUI();
     showToast(`${product.name} added to cart!`);
 }
 
 function removeFromCart(id) {
+    const itemToRemove = cart.find(item => item.id === id);
+    if (itemToRemove) {
+        // GTM Data Layer - Remove from Cart
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'remove_from_cart',
+            ecommerce: {
+                currency: 'USD',
+                value: itemToRemove.price * itemToRemove.quantity,
+                items: [{
+                    item_id: itemToRemove.id,
+                    item_name: itemToRemove.name,
+                    price: itemToRemove.price,
+                    quantity: itemToRemove.quantity
+                }]
+            }
+        });
+    }
+
     cart = cart.filter(item => item.id !== id);
     updateCartUI();
 }
@@ -223,6 +260,13 @@ function toggleMenu() {
     }
 }
 
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+    });
+});
+
 // Checkout Logic
 function processPayment(e) {
     e.preventDefault();
@@ -233,6 +277,25 @@ function processPayment(e) {
     btn.disabled = true;
 
     setTimeout(() => {
+        // GTM Data Layer - Purchase
+        const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'purchase',
+            ecommerce: {
+                transaction_id: 'TRX_' + Math.floor(Math.random() * 1000000),
+                value: subtotal + 5, // Total + Shipping
+                currency: 'USD',
+                shipping: 5.00,
+                items: cart.map(item => ({
+                    item_id: item.id,
+                    item_name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            }
+        });
+
         cart = [];
         updateCartUI();
         document.getElementById('checkout-form').classList.add('hidden');
@@ -291,20 +354,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (payForm) payForm.addEventListener('submit', processPayment);
 
     // 3D Tilt Effect
-    document.addEventListener('mousemove', (e) => {
-        const cards = document.querySelectorAll('.hover-3d');
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    // 3D Tilt Effect - Desktop Only
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.hover-3d');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
-                const xRot = ((y - rect.height / 2) / rect.height) * -10;
-                const yRot = ((x - rect.width / 2) / rect.width) * 10;
-                card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg) scale(1.02)`;
-            } else {
-                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
-            }
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    const xRot = ((y - rect.height / 2) / rect.height) * -10;
+                    const yRot = ((x - rect.width / 2) / rect.width) * 10;
+                    card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg) scale(1.02)`;
+                } else {
+                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+                }
+            });
         });
-    });
+    }
 });
