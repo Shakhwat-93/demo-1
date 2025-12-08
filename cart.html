@@ -101,20 +101,19 @@
                             placeholder="123 Green Street, Dhaka">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs text-gray-400 ml-1 uppercase font-bold tracking-wider">Card
-                                Number</label>
-                            <input type="text" required
-                                class="w-full glass bg-white/5 px-4 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
-                                placeholder="0000 0000 0000">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-400 ml-1 uppercase font-bold tracking-wider">CVC</label>
-                            <input type="text" required
-                                class="w-full glass bg-white/5 px-4 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
-                                placeholder="123">
-                        </div>
+                    <div>
+                        <label class="text-xs text-gray-400 ml-1 uppercase font-bold tracking-wider">Mobile
+                            Number</label>
+                        <input type="tel" required pattern="[0-9]{11}"
+                            class="w-full glass bg-white/5 px-4 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
+                            placeholder="01700000000">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 ml-1 uppercase font-bold tracking-wider">Note
+                            (Optional)</label>
+                        <textarea
+                            class="w-full glass bg-white/5 px-4 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10 resize-none h-24"
+                            placeholder="Any special instructions..."></textarea>
                     </div>
 
                     <div class="bg-black/20 p-6 rounded-2xl mt-6 border border-white/5">
@@ -135,7 +134,7 @@
 
                     <button type="submit" id="pay-btn"
                         class="w-full btn-primary py-4 rounded-xl font-bold text-lg mt-4 shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all">
-                        Confirm Payment
+                        Place Order
                     </button>
                 </form>
             </div>
