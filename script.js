@@ -301,35 +301,7 @@ function renderProducts(containerId, filterCategory = 'All', limit = null) {
 
 // --- 3. UI Interactions ---
 
-function showToast(msg, type = 'success') {
-    // If type is cart, show a specialized bottom sheet/popup
-    if (type === 'cart') {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-5 glass px-6 py-4 rounded-2xl border border-[#00dc82]/30 z-[60] flex items-center gap-4 shadow-2xl animate-fade-in-up w-11/12 md:w-auto max-w-sm';
-        toast.innerHTML = `
-            <div class="w-10 h-10 rounded-full bg-[#00dc82]/20 flex items-center justify-center text-[#00dc82]">
-                <i class="fa-solid fa-cart-plus"></i>
-            </div>
-            <div class="flex-1">
-                <h4 class="font-bold text-sm">Added to Cart</h4>
-                <p class="text-xs text-gray-400">${msg}</p>
-            </div>
-            <a href="cart.html" class="text-[#00dc82] text-sm font-bold hover:underline">View</a>
-        `;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.classList.add('opacity-0', 'translate-y-4');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-        return;
-    }
-
-    const toast = document.createElement('div');
-    toast.className = 'fixed bottom-5 right-5 glass px-6 py-3 rounded-xl border-l-4 border-accent z-50 animate-bounce flex items-center gap-3 shadow-2xl';
-    toast.innerHTML = `<i class="fa-solid fa-check-circle text-accent"></i> <span>${msg}</span>`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-}
+// Old toast removed, see end of file for new SweetAlert implementation
 
 function toggleMenu() {
     const menu = document.getElementById('mobile-menu');
@@ -501,5 +473,90 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Custom Cursor Logic
+        const cursorDot = document.createElement('div');
+        const cursorOutline = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        cursorOutline.className = 'cursor-outline';
+        document.body.appendChild(cursorDot);
+        document.body.appendChild(cursorOutline);
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Trail effect
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+    }
+
+    // Init AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
     }
 });
+
+// Replacement for showToast with SweetAlert2
+function showToast(msg, type = 'success') {
+    if (typeof Swal !== 'undefined') {
+        if (type === 'cart') {
+            Swal.fire({
+                title: 'Added to Cart!',
+                text: msg.replace(' added to cart!', ''),
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#0a0a0a',
+                color: '#fff',
+                iconColor: '#00dc82',
+                customClass: {
+                    popup: 'border border-[#00dc82]/30 glass'
+                }
+            });
+        } else if (type === 'error') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: msg,
+                background: '#0a0a0a',
+                color: '#fff',
+                confirmButtonColor: '#00dc82'
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: msg,
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                background: '#0a0a0a',
+                color: '#fff',
+                iconColor: '#00dc82'
+            });
+        }
+    } else {
+        // Fallback
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-5 right-5 glass px-6 py-3 rounded-xl border-l-4 border-[#00dc82] z-50 animate-bounce flex items-center gap-3 shadow-2xl';
+        toast.innerHTML = `<i class="fa-solid fa-check-circle text-[#00dc82]"></i> <span>${msg}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+}
