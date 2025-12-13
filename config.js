@@ -1,0 +1,4 @@
+
+// Supabase Config
+const SUPABASE_URL = 'https://tyetfqooqiqlpodszjge.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5ZXRmcW9vcWlxbHBvZHN6amdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2MzkyNDEsImV4cCI6MjA4MTIxNTI0MX0.9EnfDuz-MR914OLlQHBtzM2Zzj4cJrBWbwCLVpE8tsw';

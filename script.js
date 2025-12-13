@@ -267,24 +267,61 @@ document.querySelectorAll('#mobile-menu a').forEach(link => {
     });
 });
 
+// Initialize Supabase (only if available)
+let supabase;
+if (typeof window.supabase !== 'undefined' && typeof SUPABASE_URL !== 'undefined') {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
 // Checkout Logic
-function processPayment(e) {
+async function processPayment(e) {
     e.preventDefault();
     const btn = document.getElementById('pay-btn');
     const originalText = btn.innerHTML;
 
+    // Get Form Values
+    const form = document.getElementById('checkout-form');
+    const customerName = form.querySelector('input[placeholder="John Doe"]').value;
+    const address = form.querySelector('input[placeholder="123 Green Street, Dhaka"]').value;
+    const phone = form.querySelector('input[type="tel"]').value;
+    const note = form.querySelector('textarea').value;
+
+    // Calculate Total
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const totalAmount = subtotal + 5; // + Shipping
+
     btn.innerHTML = `<div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-5 w-5 mx-auto"></div>`;
     btn.disabled = true;
 
-    setTimeout(() => {
+    try {
+        if (!supabase) {
+            throw new Error("Supabase client not initialized. Check configuration.");
+        }
+
+        // Insert into Supabase
+        const { data, error } = await supabase
+            .from('orders')
+            .insert([
+                {
+                    customer_name: customerName,
+                    address: address,
+                    phone: phone,
+                    note: note,
+                    total_amount: totalAmount,
+                    items: cart,
+                    status: 'pending'
+                }
+            ]);
+
+        if (error) throw error;
+
         // GTM Data Layer - Purchase
-        const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
                 transaction_id: 'TRX_' + Math.floor(Math.random() * 1000000),
-                value: subtotal + 5, // Total + Shipping
+                value: totalAmount,
                 currency: 'USD',
                 shipping: 5.00,
                 items: cart.map(item => ({
@@ -296,14 +333,20 @@ function processPayment(e) {
             }
         });
 
+        // Clear Cart & Success UI
         cart = [];
         updateCartUI();
         document.getElementById('checkout-form').classList.add('hidden');
         document.getElementById('success-msg').classList.remove('hidden');
+        showToast("Payment Successful! Order Placed.");
+
+    } catch (err) {
+        console.error('Order Error:', err);
+        showToast("Failed to place order. Please try again.");
+    } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;
-        showToast("Payment Successful! Order Placed.");
-    }, 2000);
+    }
 }
 
 // --- 4. Initialization ---

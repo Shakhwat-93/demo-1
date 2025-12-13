@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | FreshHarvest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-[#0a0a0a] text-white min-h-screen">
+    <div class="glow-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass h-20 flex items-center border-b border-white/5">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold tracking-tight">
+                <i class="fa-solid fa-leaf text-[#00dc82]"></i> FreshHarvest <span
+                    class="text-xs bg-white/10 px-2 py-1 rounded ml-2 font-mono text-gray-400">ADMIN</span>
+            </a>
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <button onclick="fetchOrders()" class="hover:text-[#00dc82] transition-colors"><i
+                        class="fa-solid fa-rotate-right"></i> Refresh</button>
+                <a href="index.html" class="hover:text-[#00dc82] transition-colors text-gray-300">View Site</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-32 pb-12 px-6 container mx-auto">
+        <!-- Stats -->
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">Total Orders</p>
+                    <h3 class="text-4xl font-bold mt-2" id="total-orders">0</h3>
+                </div>
+                <div
+                    class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-xl">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">Total Revenue</p>
+                    <h3 class="text-4xl font-bold mt-2 text-[#00dc82]" id="total-revenue">$0.00</h3>
+                </div>
+                <div
+                    class="w-12 h-12 bg-[#00dc82]/20 rounded-full flex items-center justify-center text-[#00dc82] text-xl">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">Pending</p>
+                    <h3 class="text-4xl font-bold mt-2 text-yellow-500" id="pending-orders">0</h3>
+                </div>
+                <div
+                    class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center text-yellow-500 text-xl">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="glass-card rounded-3xl overflow-hidden border border-white/5">
+            <div
+                class="p-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <h2 class="text-xl font-bold">Recent Orders</h2>
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="text" id="search-input" placeholder="Search orders..."
+                        class="bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:border-[#00dc82] transition text-sm w-64">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-white/5">
+                            <th class="p-4">ID / Date</th>
+                            <th class="p-4">Customer</th>
+                            <th class="p-4">Items</th>
+                            <th class="p-4">Total</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body" class="text-sm divide-y divide-white/5">
+                        <!-- Rows will be injected by JS -->
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">Loading orders...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

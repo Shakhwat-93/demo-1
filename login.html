@@ -56,22 +56,43 @@
         <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
         <p class="text-gray-400 mb-8">Sign in to access your garden</p>
 
-        <form class="space-y-4 text-left">
+        <form id="login-form" class="space-y-4 text-left">
             <div>
                 <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Email</label>
-                <input type="email"
+                <input type="email" id="email" required
                     class="w-full glass bg-white/5 px-5 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
                     placeholder="hello@example.com">
             </div>
             <div>
                 <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Password</label>
-                <input type="password"
+                <input type="password" id="password" required
                     class="w-full glass bg-white/5 px-5 py-3 rounded-xl focus:outline-none focus:border-[#00dc82] transition border border-white/10"
                     placeholder="••••••••">
             </div>
-            <button class="w-full btn-primary py-3 rounded-xl font-bold mt-4 shadow-lg shadow-emerald-500/20">Sign
+            <button type="submit"
+                class="w-full btn-primary py-3 rounded-xl font-bold mt-4 shadow-lg shadow-emerald-500/20">Sign
                 In</button>
         </form>
+
+        <script>
+            document.getElementById('login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (email === 'admin@freshharvest.com' && password === 'admin123') {
+                    // Admin Login
+                    const btn = e.target.querySelector('button');
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> accessing dashboard...';
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 800);
+                } else {
+                    // User Login (Simulation)
+                    window.location.href = 'index.html';
+                }
+            });
+        </script>
 
         <p class="mt-6 text-sm text-gray-400">Don't have an account? <a href="#"
                 class="text-[#00dc82] hover:underline font-bold">Register</a></p>
