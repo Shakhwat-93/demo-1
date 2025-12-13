@@ -2,72 +2,28 @@
 let cart = JSON.parse(localStorage.getItem('freshHarvestCart')) || [];
 
 // --- Product Data ---
-const products = [
-    {
-        id: 'p1',
-        name: 'Rajshahi Mango',
-        price: 12,
-        category: 'Fruits',
-        image: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?q=80&w=600',
-        unit: '1kg Box'
-    },
-    {
-        id: 'p2',
-        name: 'Fresh Spinach',
-        price: 4,
-        category: 'Vegetables',
-        image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=80&w=600',
-        unit: 'Organic Bunch'
-    },
-    {
-        id: 'p3',
-        name: 'Red Tomatoes',
-        price: 6.50,
-        category: 'Vegetables',
-        image: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=600',
-        unit: '1kg Fresh'
-    },
-    {
-        id: 'p4',
-        name: 'Sweet Corn',
-        price: 5,
-        category: 'Vegetables',
-        image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=600',
-        unit: '3 Pcs Pack'
-    },
-    {
-        id: 'p5',
-        name: 'Organic Avocados',
-        price: 15,
-        category: 'Fruits',
-        image: 'https://images.unsplash.com/photo-1523049673856-428689c8ae89?q=80&w=600',
-        unit: '3 Pcs Box'
-    },
-    {
-        id: 'p6',
-        name: 'Red Strawberries',
-        price: 9,
-        category: 'Fruits',
-        image: 'https://images.unsplash.com/photo-1464965911861-746a04b4b0a0?q=80&w=600',
-        unit: '500g Pack'
-    },
-    {
-        id: 'p7',
-        name: 'Broccoli',
-        price: 3.50,
-        category: 'Vegetables',
-        image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?q=80&w=600',
-        unit: '1 Head'
-    },
-    {
-        id: 'p8',
-        name: 'Fresh Carrots',
-        price: 4.20,
-        category: 'Vegetables',
-        image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=600',
-        unit: '1kg Bunch'
+// --- Product Data ---
+let products = [];
+
+// Fetch Products from Supabase
+async function loadProducts() {
+    if (typeof supabase === 'undefined') return;
+
+    try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (error) throw error;
+        products = data;
+
+        // Re-render based on current page
+        if (document.getElementById('home-products-grid')) renderProducts('home-products-grid', 'All', 4);
+        if (document.getElementById('all-products-grid')) renderProducts('all-products-grid', 'All');
+
+    } catch (err) {
+        console.error('Failed to load products:', err);
+        // Fallback or Toast?
     }
-];
+}
+
 
 // --- 1. Cart System ---
 
@@ -88,15 +44,16 @@ function updateCartUI() {
     localStorage.setItem('freshHarvestCart', JSON.stringify(cart));
 }
 
-function addToCart(id) {
-    const product = products.find(p => p.id === id);
+function addToCart(id, qty = 1) {
+    // Safety check for mixed types (string vs number id)
+    const product = products.find(p => p.id == id);
     if (!product) return;
 
-    const existingItem = cart.find(item => item.id === id);
+    const existingItem = cart.find(item => item.id == id);
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += qty;
     } else {
-        cart.push({ ...product, quantity: 1 });
+        cart.push({ ...product, quantity: qty });
     }
 
     // GTM Data Layer - Add to Cart
@@ -111,13 +68,13 @@ function addToCart(id) {
                 item_name: product.name,
                 item_category: product.category,
                 price: product.price,
-                quantity: 1
+                quantity: qty
             }]
         }
     });
 
     updateCartUI();
-    showToast(`${product.name} added to cart!`);
+    showToast(`${product.name} added to cart!`, 'cart');
 }
 
 function removeFromCart(id) {
@@ -200,12 +157,20 @@ function renderCartPage() {
 // --- 2. Product Rendering & Filtering ---
 
 function createProductCard(product) {
+    const isWishlisted = localStorage.getItem(`wish_${product.id}`);
+    const heartClass = isWishlisted ? 'fa-solid text-red-500' : 'fa-regular text-white';
+
     return `
-        <div class="glass-card rounded-3xl overflow-hidden group hover-3d h-full flex flex-col">
+        <div class="glass-card rounded-3xl overflow-hidden group hover-3d h-full flex flex-col cursor-pointer" onclick="openProductDetail('${product.id}')">
             <div class="relative h-56 overflow-hidden">
                 <img src="${product.image}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="${product.name}">
-                <div class="absolute top-3 right-3 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/10">
-                    ${product.category}
+                <div class="absolute top-3 right-3 flex gap-2">
+                    <button onclick="event.stopPropagation(); toggleWishlist(this, '${product.id}')" class="bg-black/40 backdrop-blur-md w-8 h-8 rounded-full flex items-center justify-center border border-white/10 hover:bg-white/20 transition">
+                        <i class="${heartClass}"></i>
+                    </button>
+                    <div class="bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/10">
+                        ${product.category}
+                    </div>
                 </div>
             </div>
             <div class="p-5 flex-1 flex flex-col">
@@ -216,13 +181,105 @@ function createProductCard(product) {
                     </div>
                     <span class="text-[#00dc82] font-bold text-xl">$${product.price}</span>
                 </div>
-                <button onclick="addToCart('${product.id}')" 
+                <button onclick="event.stopPropagation(); addToCart('${product.id}')" 
                         class="w-full mt-auto btn-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(0,220,130,0.3)] transition-all">
                     <i class="fa-solid fa-cart-shopping"></i> Add to Cart
                 </button>
             </div>
         </div>
     `;
+}
+
+function toggleWishlist(btn, id) {
+    const icon = btn.querySelector('i');
+    if (icon.classList.contains('fa-regular')) {
+        icon.classList.remove('fa-regular', 'text-white');
+        icon.classList.add('fa-solid', 'text-red-500');
+        localStorage.setItem(`wish_${id}`, 'true');
+        showToast('Added to Favorites');
+    } else {
+        icon.classList.remove('fa-solid', 'text-red-500');
+        icon.classList.add('fa-regular', 'text-white');
+        localStorage.removeItem(`wish_${id}`);
+        showToast('Removed from Favorites');
+    }
+}
+
+// --- Product Detail Modal ---
+
+function openProductDetail(id) {
+    const product = products.find(p => p.id == id); // Loose equality for potential string/int mismatch
+    if (!product) return;
+
+    // Create Modal HTML if not exists
+    let modal = document.getElementById('product-detail-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'product-detail-modal';
+        modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="glass-card w-full max-w-4xl rounded-3xl overflow-hidden relative transform scale-95 transition-transform duration-300">
+            <button onclick="closeProductDetail()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-[#00dc82] transition"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="grid md:grid-cols-2">
+                <div class="h-64 md:h-full relative group">
+                     <img src="${product.image}" class="w-full h-full object-cover">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6 md:hidden">
+                        <h2 class="text-3xl font-bold text-white">${product.name}</h2>
+                     </div>
+                </div>
+                <div class="p-8 md:p-12 flex flex-col justify-center">
+                    <span class="text-[#00dc82] font-bold tracking-wider uppercase text-sm mb-2">${product.category}</span>
+                    <h2 class="text-4xl font-bold mb-4 hidden md:block">${product.name}</h2>
+                    <p class="text-2xl font-bold text-white mb-6">$${product.price} <span class="text-sm text-gray-400 font-normal">/ ${product.unit}</span></p>
+                    
+                    <p class="text-gray-300 mb-8 leading-relaxed">
+                        Freshly harvested ${product.name.toLowerCase()}. Grown organically ensuring the highest nutritional value and taste. Perfect for your daily healthy diet.
+                    </p>
+                    
+                    <div class="flex gap-4">
+                         <div class="flex items-center gap-3 bg-white/5 px-4 rounded-xl border border-white/10">
+                            <button class="text-xl hover:text-[#00dc82]" onclick="changeModalQuantity(-1)">-</button>
+                            <span id="modal-qty" class="font-mono text-lg font-bold w-6 text-center">1</span>
+                            <button class="text-xl hover:text-[#00dc82]" onclick="changeModalQuantity(1)">+</button>
+                        </div>
+                        <button onclick="addToCart('${product.id}', parseInt(document.getElementById('modal-qty').innerText)); closeProductDetail()" 
+                                class="flex-1 btn-primary py-4 rounded-xl font-bold shadow-lg shadow-emerald-500/20">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.classList.remove('hidden');
+    // Small delay for fade in
+    requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.querySelector('.glass-card').classList.remove('scale-95');
+        modal.querySelector('.glass-card').classList.add('scale-100');
+    });
+}
+
+function closeProductDetail() {
+    const modal = document.getElementById('product-detail-modal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modal.querySelector('.glass-card').classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+}
+
+function changeModalQuantity(change) {
+    const qtyEl = document.getElementById('modal-qty');
+    let current = parseInt(qtyEl.innerText);
+    current += change;
+    if (current < 1) current = 1;
+    qtyEl.innerText = current;
 }
 
 function renderProducts(containerId, filterCategory = 'All', limit = null) {
@@ -244,7 +301,29 @@ function renderProducts(containerId, filterCategory = 'All', limit = null) {
 
 // --- 3. UI Interactions ---
 
-function showToast(msg) {
+function showToast(msg, type = 'success') {
+    // If type is cart, show a specialized bottom sheet/popup
+    if (type === 'cart') {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-5 glass px-6 py-4 rounded-2xl border border-[#00dc82]/30 z-[60] flex items-center gap-4 shadow-2xl animate-fade-in-up w-11/12 md:w-auto max-w-sm';
+        toast.innerHTML = `
+            <div class="w-10 h-10 rounded-full bg-[#00dc82]/20 flex items-center justify-center text-[#00dc82]">
+                <i class="fa-solid fa-cart-plus"></i>
+            </div>
+            <div class="flex-1">
+                <h4 class="font-bold text-sm">Added to Cart</h4>
+                <p class="text-xs text-gray-400">${msg}</p>
+            </div>
+            <a href="cart.html" class="text-[#00dc82] text-sm font-bold hover:underline">View</a>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-4');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+        return;
+    }
+
     const toast = document.createElement('div');
     toast.className = 'fixed bottom-5 right-5 glass px-6 py-3 rounded-xl border-l-4 border-accent z-50 animate-bounce flex items-center gap-3 shadow-2xl';
     toast.innerHTML = `<i class="fa-solid fa-check-circle text-accent"></i> <span>${msg}</span>`;
@@ -311,7 +390,8 @@ async function processPayment(e) {
                     items: cart,
                     status: 'pending'
                 }
-            ]);
+            ])
+            .select();
 
         if (error) throw error;
 
@@ -320,7 +400,7 @@ async function processPayment(e) {
         window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
-                transaction_id: 'TRX_' + Math.floor(Math.random() * 1000000),
+                transaction_id: data[0].id,
                 value: totalAmount,
                 currency: 'USD',
                 shipping: 5.00,
@@ -333,25 +413,31 @@ async function processPayment(e) {
             }
         });
 
-        // Clear Cart & Success UI
+        // Clear Cart
         cart = [];
         updateCartUI();
-        document.getElementById('checkout-form').classList.add('hidden');
-        document.getElementById('success-msg').classList.remove('hidden');
-        showToast("Payment Successful! Order Placed.");
+
+        // Redirect to success page
+        showToast("Payment Successful! Redirecting...");
+        setTimeout(() => {
+            window.location.href = `success.html?id=${data[0].id}`;
+        }, 1000);
 
     } catch (err) {
         console.error('Order Error:', err);
-        showToast("Failed to place order. Please try again.");
+        showToast("Failed to place order. Please try again.", "error"); // Fixed toast type
     } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     }
 }
 
 // --- 4. Initialization ---
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadProducts(); // Fetch data
     updateCartUI();
 
     // Home Page

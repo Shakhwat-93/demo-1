@@ -19,14 +19,26 @@
     <!-- Navbar -->
     <nav class="fixed w-full z-50 glass h-20 flex items-center border-b border-white/5">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                <i class="fa-solid fa-leaf text-[#00dc82]"></i> FreshHarvest <span
-                    class="text-xs bg-white/10 px-2 py-1 rounded ml-2 font-mono text-gray-400">ADMIN</span>
-            </a>
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="flex items-center gap-2 text-2xl font-bold tracking-tight">
+                    <i class="fa-solid fa-leaf text-[#00dc82]"></i> FreshHarvest <span
+                        class="text-xs bg-white/10 px-2 py-1 rounded ml-2 font-mono text-gray-400">ADMIN</span>
+                </a>
+                <!-- Tabs -->
+                <div class="hidden md:flex gap-1 bg-white/5 p-1 rounded-xl">
+                    <button onclick="switchTab('orders')" id="tab-orders"
+                        class="px-4 py-2 rounded-lg text-sm font-bold bg-[#00dc82] text-[#003d33] transition-colors">Orders</button>
+                    <button onclick="switchTab('products')" id="tab-products"
+                        class="px-4 py-2 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-colors">Products</button>
+                </div>
+            </div>
             <div class="flex items-center gap-6 text-sm font-medium">
-                <button onclick="fetchOrders()" class="hover:text-[#00dc82] transition-colors"><i
+                <button onclick="window.location.reload()" class="hover:text-[#00dc82] transition-colors"><i
                         class="fa-solid fa-rotate-right"></i> Refresh</button>
-                <a href="index.html" class="hover:text-[#00dc82] transition-colors text-gray-300">View Site</a>
+                <a href="index.html" target="_blank" class="hover:text-[#00dc82] transition-colors text-gray-300">View
+                    Site</a>
+                <button onclick="logout()" class="text-red-400 hover:text-red-300 transition-colors"><i
+                        class="fa-solid fa-right-from-bracket"></i> Logout</button>
             </div>
         </div>
     </nav>
@@ -66,8 +78,9 @@
             </div>
         </div>
 
-        <!-- Orders Table -->
-        <div class="glass-card rounded-3xl overflow-hidden border border-white/5">
+        <!-- Orders Section -->
+        <div id="section-orders"
+            class="glass-card rounded-3xl overflow-hidden border border-white/5 animate-fade-in-up">
             <div
                 class="p-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <h2 class="text-xl font-bold">Recent Orders</h2>
@@ -99,6 +112,84 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Products Section (Hidden by Default) -->
+        <div id="section-products"
+            class="hidden glass-card rounded-3xl overflow-hidden border border-white/5 animate-fade-in-up">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                <h2 class="text-xl font-bold">Product Management</h2>
+                <button onclick="openProductModal()"
+                    class="btn-primary px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Add Product
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-white/5">
+                            <th class="p-4">Image</th>
+                            <th class="p-4">Name</th>
+                            <th class="p-4">Category</th>
+                            <th class="p-4">Price</th>
+                            <th class="p-4">Unit</th>
+                            <th class="p-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body" class="text-sm divide-y divide-white/5">
+                        <!-- Rows will be injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="product-modal"
+        class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-8 relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-bold mb-6">Add New Product</h3>
+
+            <form id="product-form" class="space-y-4">
+                <input type="hidden" id="p-id">
+                <div>
+                    <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Product Name</label>
+                    <input type="text" id="p-name" required
+                        class="w-full glass bg-white/5 px-4 py-2 rounded-xl border border-white/10 focus:border-[#00dc82] outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Price ($)</label>
+                        <input type="number" step="0.01" id="p-price" required
+                            class="w-full glass bg-white/5 px-4 py-2 rounded-xl border border-white/10 focus:border-[#00dc82] outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Unit</label>
+                        <input type="text" id="p-unit" placeholder="e.g. 1kg" required
+                            class="w-full glass bg-white/5 px-4 py-2 rounded-xl border border-white/10 focus:border-[#00dc82] outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Category</label>
+                    <select id="p-category"
+                        class="w-full glass bg-white/5 px-4 py-2 rounded-xl border border-white/10 focus:border-[#00dc82] outline-none">
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 ml-2 uppercase font-bold tracking-wider">Image URL</label>
+                    <input type="url" id="p-image" placeholder="https://..." required
+                        class="w-full glass bg-white/5 px-4 py-2 rounded-xl border border-white/10 focus:border-[#00dc82] outline-none">
+                </div>
+
+                <button type="submit" class="w-full btn-primary py-3 rounded-xl font-bold mt-4">Save Product</button>
+            </form>
         </div>
     </div>
 
